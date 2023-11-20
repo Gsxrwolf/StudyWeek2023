@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class OilTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private string playerTag;
+    private float tempNormalSpeed;
+    private float tempSprintSpeed;
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
+        if(other.gameObject.CompareTag(playerTag))
+        {
+            PlayerController effected = other.gameObject.GetComponent<PlayerController>();
+            tempNormalSpeed = effected.normalSpeed;
+            tempSprintSpeed = effected.sprintSpeed;
+            effected.sprintSpeed = effected.normalSpeed;
+            effected.normalSpeed = effected.normalSpeed / 2;
+            effected.SpeedUpdate();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerExit2D(Collider2D other)
     {
-        
+        if (other.gameObject.CompareTag(playerTag))
+        {
+            PlayerController effected = other.gameObject.GetComponent<PlayerController>();
+            effected.normalSpeed = tempNormalSpeed;
+            effected.sprintSpeed = tempSprintSpeed;
+            effected.SpeedUpdate();
+        }
     }
 }

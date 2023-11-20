@@ -81,6 +81,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void SpeedUpdate()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            curSpeed = sprintSpeed;
+        }
+        else
+        {
+            curSpeed = normalSpeed;
+        }
+    }
+
     public void DealDamage(float _damage)
     {
         health -= _damage;
