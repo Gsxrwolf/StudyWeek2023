@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rayCastLeangth;
     private bool grounded = true;
 
+    [SerializeField] private float health;
+
     private void Start()
     {
         rB = GetComponent<Rigidbody2D>();
@@ -77,6 +79,17 @@ public class PlayerController : MonoBehaviour
         {
             curSpeed = normalSpeed;
         }
+    }
+
+    public void DealDamage(float _damage)
+    {
+        health -= _damage;
+        if (health < 0) health = 0;
+    }
+
+    public float GetHealth()
+    {
+        return health;
     }
 
 
