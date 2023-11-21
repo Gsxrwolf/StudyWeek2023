@@ -154,6 +154,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46df04a6bd266474187e50c23bf57e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTag: 
+  directDamage: 0
+  directDamageAmount: 0
+  continuiusDamage: 0
+  tickDamageAmount: 0
+  timeBetweenTicks: 0
+  tickTime: 0
 --- !u!212 &44067425
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -571,6 +578,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46df04a6bd266474187e50c23bf57e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTag: 
+  directDamage: 0
+  directDamageAmount: 0
+  continuiusDamage: 0
+  tickDamageAmount: 0
+  timeBetweenTicks: 0
+  tickTime: 0
 --- !u!212 &1491562392
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -694,7 +708,7 @@ GameObject:
   - component: {fileID: 1930267662}
   - component: {fileID: 1930267661}
   - component: {fileID: 1930267660}
-  - component: {fileID: 1930267659}
+  - component: {fileID: 1930267663}
   m_Layer: 0
   m_Name: Poisen
   m_TagString: Untagged
@@ -702,19 +716,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1930267659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1930267658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0764a598b0e312c47b3d02ca6131a172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerTag: 
 --- !u!61 &1930267660
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -827,6 +828,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1930267663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1930267658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46df04a6bd266474187e50c23bf57e37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTag: Player
+  directDamage: 0
+  directDamageAmount: 0
+  continuiusDamage: 1
+  tickDamageAmount: 1
+  timeBetweenTicks: 1
+  tickTime: 0
 --- !u!1001 &243825001593228638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -935,6 +955,10 @@ PrefabInstance:
     - target: {fileID: 3484851798442933672, guid: dff406ee2f10e4d4595a5df351905e07, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4114283606139118344, guid: dff406ee2f10e4d4595a5df351905e07, type: 3}
+      propertyPath: health
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6654519653956182964, guid: dff406ee2f10e4d4595a5df351905e07, type: 3}
       propertyPath: m_Name
