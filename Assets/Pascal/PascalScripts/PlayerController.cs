@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float normalSpeed = 2f;
     [SerializeField] public float sprintSpeed = 4f;
     [SerializeField] public float jumpForce = 1.5f;
+    public bool jumpBlock = false;
 
     [SerializeField] private GameObject groundRayCastOrigin;
     [SerializeField] private LayerMask groundLayer;
@@ -36,7 +37,10 @@ public class PlayerController : MonoBehaviour
         SprintCheck();
         InputCheck();
         CheckGrounded();
-        JumpCheck();
+        if(!jumpBlock)
+        {
+            JumpCheck();
+        }
     }
 
     private void InputCheck()

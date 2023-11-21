@@ -14,6 +14,7 @@ public class OilTrigger : MonoBehaviour
             PlayerController effected = other.gameObject.GetComponent<PlayerController>();
             tempNormalSpeed = effected.normalSpeed;
             tempSprintSpeed = effected.sprintSpeed;
+            effected.jumpBlock = true;
             effected.sprintSpeed = effected.normalSpeed;
             effected.normalSpeed = effected.normalSpeed / 2;
             effected.SpeedUpdate();
@@ -25,6 +26,7 @@ public class OilTrigger : MonoBehaviour
         if (other.gameObject.CompareTag(playerTag))
         {
             PlayerController effected = other.gameObject.GetComponent<PlayerController>();
+            effected.jumpBlock = false;
             effected.normalSpeed = tempNormalSpeed;
             effected.sprintSpeed = tempSprintSpeed;
             effected.SpeedUpdate();
