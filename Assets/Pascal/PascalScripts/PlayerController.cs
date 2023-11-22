@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
     {
         damageBlock = true;
         damageBlockTime = _time;
-        damageBlockParticleSystem.SetActive(false);
+        damageBlockParticleSystem.SetActive(true);
     }
     public void DealDamage(float _damage)
     {
