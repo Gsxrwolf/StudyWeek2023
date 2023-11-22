@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private float maxHealth;
     public bool damageBlock;
     private float damageBlockTime;
+
+    [SerializeField] private UnityEvent<float,float> onHealthChange;
 
     private void Start()
     {
@@ -129,11 +132,13 @@ public class PlayerController : MonoBehaviour
             health -= _damage;
             if (health < 0) health = 0;
         }
+        onHealthChange.Invoke(health, maxHealth);
     }
     public void HealHealth(float _healAmount)
     {
         health += _healAmount;
         if (health > maxHealth) health = maxHealth;
+        onHealthChange.Invoke(health, maxHealth);
     }
 
     public float GetHealth()
