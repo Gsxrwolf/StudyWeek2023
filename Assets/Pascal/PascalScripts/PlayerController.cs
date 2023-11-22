@@ -23,21 +23,41 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rayCastLeangth;
     private bool grounded = true;
 
+    [SerializeField] private GameObject damageBlockParticleSystem;
     [SerializeField] private float health;
+    private float maxHealth;
+    public bool damageBlock;
+    private float damageBlockTime;
 
     private void Start()
     {
         rB = GetComponent<Rigidbody2D>();
         sR = GetComponent<SpriteRenderer>();
+        maxHealth = health;
     }
 
     private void Update()
     {
         //animator.SetBool("walking", false);
+
+        if (damageBlockTime != 0)
+        {
+            damageBlockTime -= 1 * Time.deltaTime;
+        }
+        if (damageBlockTime < 0)
+        {
+            damageBlockTime = 0;
+        }
+        if (damageBlockTime == 0)
+        {
+            damageBlockParticleSystem.SetActive(false);
+            damageBlock = false;
+        }
+
         SprintCheck();
         InputCheck();
         CheckGrounded();
-        if(!jumpBlock)
+        if (!jumpBlock)
         {
             JumpCheck();
         }
@@ -96,11 +116,24 @@ public class PlayerController : MonoBehaviour
             curSpeed = normalSpeed;
         }
     }
-
+    public void DamageBlock(float _time)
+    {
+        damageBlock = true;
+        damageBlockTime = _time;
+        damageBlockParticleSystem.SetActive(false);
+    }
     public void DealDamage(float _damage)
     {
-        health -= _damage;
-        if (health < 0) health = 0;
+        if (!damageBlock)
+        {
+            health -= _damage;
+            if (health < 0) health = 0;
+        }
+    }
+    public void HealHealth(float _healAmount)
+    {
+        health += _healAmount;
+        if (health > maxHealth) health = maxHealth;
     }
 
     public float GetHealth()
