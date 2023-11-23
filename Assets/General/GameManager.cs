@@ -16,4 +16,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+
+    public float score;
+    public int weapon;
 }
