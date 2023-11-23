@@ -95,11 +95,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-<<<<<<< refs/remotes/origin/Tony/OutgameUI
       "version": "1.8.7",
-=======
-      "version": "1.8.8",
->>>>>>> Final UI
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -260,7 +256,7 @@
       }
     },
     "com.unity.visualscripting": {
-      "version": "1.9.0",
+      "version": "1.8.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
