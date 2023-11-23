@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class ScoreDisplay : MonoBehaviour
 {
-    public void OnScoreChange(float _newScore)
+    float curScore;
+    public void Update()
     {
-        string output = "Score: " + _newScore;
+        curScore = GameManager.Instance.score;
+        string output = "Score: " + curScore;
         GetComponent<TextMeshProUGUI>().text = output;
     }
 }
