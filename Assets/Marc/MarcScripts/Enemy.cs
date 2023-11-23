@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private int speed = 2;
+
+    [SerializeField] public int XP;
 
     [SerializeField] public GameObject gameobject;
 
@@ -29,6 +32,7 @@ public class Enemy : MonoBehaviour
         if (health == 0 || health <= 0) // die 
         {
             Destroy(gameObject);
+            GameManager.Instance.score += XP;
             isAlive = false;
         }
 
