@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private int speed = 2;
 
-    [SerializeField] public GameObject gameobject;
+    [SerializeField] public int XP;
+
+    [SerializeField] public GameObject gameobject; // player für position
+
+    [SerializeField] public GameObject attackTrigger; // Empty Object für OntriggerEnter um anzugreifen
 
     [SerializeField] public int health = 50;
 
@@ -29,6 +34,7 @@ public class Enemy : MonoBehaviour
         if (health == 0 || health <= 0) // die 
         {
             Destroy(gameObject);
+            GameManager.Instance.score += XP;
             isAlive = false;
         }
 
@@ -57,7 +63,10 @@ public class Enemy : MonoBehaviour
         {
             isStanding = true;
         }
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerController>().DealDamage(damage);
