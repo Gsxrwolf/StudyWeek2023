@@ -10,7 +10,9 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] public int XP;
 
-    [SerializeField] public GameObject gameobject;
+    [SerializeField] public GameObject gameobject; // player für position
+
+    [SerializeField] public GameObject attackTrigger; // Empty Object für OntriggerEnter um anzugreifen
 
     [SerializeField] public int health = 50;
 
@@ -61,7 +63,10 @@ public class Enemy : MonoBehaviour
         {
             isStanding = true;
         }
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerController>().DealDamage(damage);
