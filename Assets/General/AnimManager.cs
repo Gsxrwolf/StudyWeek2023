@@ -33,11 +33,11 @@ public class AnimManager : MonoBehaviour
     {
         if(GameManager.Instance.weapon == 0)
         {
-            //player.GetComponent<Animator>().
+            player.GetComponent<Animator>().runtimeAnimatorController = playerSwordAnimator;
         }
         if (GameManager.Instance.weapon == 1)
         {
-            //player.GetComponent<Animator>().
+            player.GetComponent<Animator>().runtimeAnimatorController = playerHammerAnimator;
         }
         playerAnimator = player.GetComponent<Animator>();
     }
