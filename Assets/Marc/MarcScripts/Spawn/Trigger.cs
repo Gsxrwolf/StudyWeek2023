@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Trigger : MonoBehaviour
 {
-    [SerializeField] public bool spawnEnemy = true;
-    [SerializeField] public bool spawnBoss = true;
     void Start()
     {
         
@@ -21,7 +19,7 @@ public class Trigger : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Player"))
         {
-            if(Spawn.i == 0 && spawnEnemy == true) // spawn Enemy
+            if(Spawn.i == 0 ) // spawn Enemy
             {
                 Spawn.i = 1; 
             }
