@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
         if (health == 0 || health <= 0) // die 
         {
             Destroy(gameObject);
-            GameManager.Instance.score += XP;
+            GameManager.Instance.curScore += XP;
             isAlive = false;
         }
 

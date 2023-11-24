@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,18 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public float score;
+    public float curScore;
     public int weapon;
+    public List<float> scoreboard = new List<float>();
+    public List<float> scoreBuffer = new List<float>();
+
+    private void OnSceneUnloaded(Scene current)
+    {
+        if(current.buildIndex == 6)
+        {
+            scoreBuffer.Add(curScore);
+            curScore = 0;
+        }
+    }
+
 }
