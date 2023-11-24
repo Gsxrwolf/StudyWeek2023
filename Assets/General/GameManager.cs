@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     public List<float> scoreboard = new List<float>();
     public List<float> scoreBuffer = new List<float>();
 
+    public bool isMuted;
+
     private void OnSceneUnloaded(Scene current)
     {
         if(current.buildIndex == 6)
