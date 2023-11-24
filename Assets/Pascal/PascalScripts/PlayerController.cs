@@ -32,6 +32,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private UnityEvent<float, float> onHealthChange;
 
+
+    [SerializeField] private Collider2D attackCollider;
+    [SerializeField] private float damage;
+    [SerializeField] private string enemyTag;
+
     private void Start()
     {
         rB = GetComponent<Rigidbody2D>();
@@ -66,11 +71,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     private void InputCheck()
     {
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            sR.flipX = true;
+            transform.localScale = new Vector3(-1, -1, 0);
             AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
             playerTempPos = transform.position;
             playerTempPos.x -= curSpeed * Time.deltaTime;
@@ -78,7 +84,7 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            sR.flipX = false;
+            transform.localScale = new Vector3(1, 1, 0);
             AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
             playerTempPos = transform.position;
             playerTempPos.x += curSpeed * Time.deltaTime;
@@ -144,6 +150,19 @@ public class PlayerController : MonoBehaviour
     public float GetHealth()
     {
         return health;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.IsTouching(attackCollider))
+        {
+            if(collision.CompareTag(enemyTag))
+            {
+                //collision.gameObject.TryGetComponent<OgerScript>().DealDamage((int)damage);
+                //collision.gameObject.TryGetComponent<BossScript>().DealDamage((int)damage);
+                //collision.gameObject.TryGetComponent<OgerScript>().DealDamage((int)damage);
+            }
+        }
     }
 
 
