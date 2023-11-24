@@ -24,7 +24,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainCredits.unity
     guid: 97fbaaf11adfa84478102a90e410d7fc
   - enabled: 1
-    path: Assets/Scenes/MainGame.unity
+    path: Assets/Toni/Scenes/MainGame.unity
     guid: 411365729781c594c85815fd30df2ed6
   - enabled: 1
     path: Assets/Scenes/MainDeath.unity
