@@ -8,7 +8,7 @@ public class ScoreDisplay : MonoBehaviour
     float curScore;
     public void Update()
     {
-        curScore = GameManager.Instance.score;
+        curScore = GameManager.Instance.curScore;
         string output = "Score: " + curScore;
         GetComponent<TextMeshProUGUI>().text = output;
     }
