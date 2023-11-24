@@ -52,13 +52,13 @@ public class ScoreBoardManager : MonoBehaviour
 
     private bool CheckIfProcessedScoreIsHigherThanLowestScore(float _processedScore)
     {
-        if (_processedScore < updatedScoreboard[lastScoreboard.Count - 1])
+        if (_processedScore > updatedScoreboard[0])
         {
-            return false;
+            return true;
         }
         else
         {
-            return true;
+            return false;
         }
     }
 
@@ -69,7 +69,9 @@ public class ScoreBoardManager : MonoBehaviour
 
     private void PrintUpdatedScoreBoardToText()
     {
-        for (int i = 0; i < scoreTextFields.Count - 1; i++)
+        updatedScoreboard.Sort();
+        updatedScoreboard.Reverse();
+        for (int i = 0; i < scoreTextFields.Count; i++)
         {
             if (updatedScoreboard[i] != null)
             {
@@ -82,26 +84,25 @@ public class ScoreBoardManager : MonoBehaviour
     private void DeleteLowestScore()
     {
         updatedScoreboard.Sort();
-        updatedScoreboard.Reverse();
-        updatedScoreboard.Remove(lastScoreboard.Count - 1);
+        updatedScoreboard.RemoveAt(0);
     }
 
     private void SortScoreInScoreBoard(float _processedScore)
     {
         updatedScoreboard.Add(_processedScore);
         updatedScoreboard.Sort();
-        lastScoreboard.Reverse();
     }
 
     public bool CheckIfScoreboardHasEmptySlots()
     {
-        if (lastScoreboard.Count < 10)
+        if (updatedScoreboard.Count < 10)
         {
             return true;
         }
-        else
+        if (updatedScoreboard.Count >= 10)
         {
             return false;
         }
+        return true;
     }
 }
