@@ -6,7 +6,7 @@ using UnityEngine.SocialPlatforms.Impl;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
-    private int speed = 2;
+    private int speed = 50;
 
     [SerializeField] public int XP;
 
@@ -38,12 +38,12 @@ public class Enemy : MonoBehaviour
             isAlive = false;
         }
 
+        //if x < aktuelle position flip rigidbody true ; andersrum false
 
-
-        if (isStanding) // is True if Enemy is on Bottom 
-        {
-            transform.position = Vector3.MoveTowards(transform.position, gameObject.transform.position, speed * Time.deltaTime);  // Follow the player    
-        }
+       // if (isStanding) // is True if Enemy is on Bottom 
+        
+         transform.position = Vector3.MoveTowards(transform.position, gameObject.transform.position, speed * Time.deltaTime);  // Follow the player    
+        
     }
 
     public void DealDamage(int _damage) // get Damage from Player && Event !?
@@ -59,10 +59,10 @@ public class Enemy : MonoBehaviour
     // Enemy soll stehenbleiben wenn er den Player berührt dann animation ausführen und schaden machen soferb player in range ist ( Trigger Enter 2D ? )
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Bottom")) // To avoid that Enemys will fly they are "sticked" to Bottom  ( In case we add a Dash or smth )
-        {
-            isStanding = true;
-        }
+      //  if (collision.gameObject.CompareTag("Bottom")) // To avoid that Enemys will fly they are "sticked" to Bottom  ( In case we add a Dash or smth )
+      // {
+      //       isStanding = true;
+      //  }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
