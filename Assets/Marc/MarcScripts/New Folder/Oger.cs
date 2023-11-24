@@ -1,10 +1,11 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Boss : MonoBehaviour
+public class Oger : MonoBehaviour
 {
     [SerializeField]
     public int speed = 2;
@@ -31,7 +32,7 @@ public class Boss : MonoBehaviour
     {
         m_spriteRenderer = GetComponent<SpriteRenderer>();
 
-        
+
         boxcollider = GetComponent<Rigidbody2D>();
     }
     void Update()
@@ -47,20 +48,19 @@ public class Boss : MonoBehaviour
 
         if (gameObject.transform.position.x <= transform.position.x)
         {
-            transform.localScale = new Vector3(-0.25f, 0.25f, 1f);
-          //  m_spriteRenderer.flipX = true;
+            transform.localScale = new Vector3(0.4f, 0.4f, 1f);
+            //  m_spriteRenderer.flipX = true;
         }
         else
         {
-            transform.localScale = new Vector3(0.25f, 0.25f, 1f);
-          //  m_spriteRenderer.flipX = false;
+            transform.localScale = new Vector3(-0.4f, 0.4f, 1f);
+            //  m_spriteRenderer.flipX = false;
         }
         // is True if Enemy is on Bottom 
         if (isStanding)
-        { 
-            
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(gameobject.transform.position.x, transform.position.y, gameobject.transform.position.z), speed * Time.deltaTime); // Follow the player 
-            AnimManager.Instance.GoblinShouldWalk();//  isStanding = false;
+        {
+            AnimManager.Instance.OgerShouldWalk();
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(gameobject.transform.position.x, transform.position.y, gameobject.transform.position.z), speed * Time.deltaTime); // Follow the player                                                                                                                                //  isStanding = false;
         }
 
         if (transform.position.x == gameobject.transform.position.x)
@@ -88,7 +88,7 @@ public class Boss : MonoBehaviour
         isStanding = true;
     }
 
-   private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Bottom"))
         {
@@ -98,17 +98,11 @@ public class Boss : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-           // Destroy(gameObject);
-        }
-
-        if (collision.gameObject.CompareTag("Player"))
-        {
             isStanding = false;
-            AnimManager.Instance.GoblinShouldAttack();
+            AnimManager.Instance.OgerShouldAttack();
             collision.gameObject.GetComponent<PlayerController>().DealDamage(damage);
-           
+            isStanding = true;
         }
-
 
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -121,18 +115,10 @@ public class Boss : MonoBehaviour
         }
     }
 
-    
-  /*  private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Destroy(gameObject);
-        }
 
-            if (collision.gameObject.CompareTag("Player"))
-        {
-            collision.gameObject.GetComponent<PlayerController>().DealDamage(damage);
-        }
-    }*/
+    }
 }
+

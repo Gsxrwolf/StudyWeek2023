@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spawn : MonoBehaviour
 {
     public GameObject m_gameobject;
-    public GameObject s_gameobject;
+   //public GameObject s_gameobject;
 
     public static int i = 0;
     // Start is called before the first frame update
