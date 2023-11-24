@@ -9,4 +9,19 @@ public class SceneSwapper : MonoBehaviour
     {
         SceneManager.LoadScene(sceneID);
     }
+
+    public void PressOnExit()
+    {
+        Application.Quit();
+    }
+
+    public void OnMUteButtonPress()
+    {
+    GameManager.Instance.isMuted = !GameManager.Instance.isMuted;
+    }
+
+    public void ChooseWeapon(int _Weapon)
+    {
+    GameManager.Instance.weapon = _Weapon;
+    }
 }
