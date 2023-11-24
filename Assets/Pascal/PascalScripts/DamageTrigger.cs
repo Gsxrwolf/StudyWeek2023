@@ -8,13 +8,20 @@ public class DamageTrigger : MonoBehaviour
     private PlayerController effected;
     [SerializeField] private bool directDamage;
     [SerializeField] private float directDamageAmount;
+
     [SerializeField] private bool continuiusDamage;
     [SerializeField] private float tickDamageAmount;
     [SerializeField] private float timeBetweenTicks;
-    [SerializeField] private float tickTime;
+    private float tickTimeContinuius;
+
+    [SerializeField] private bool passedDamage;
+    private bool playerIsDamagedOverTime;
+    [SerializeField] private float passedDamageAmount;
+    [SerializeField] private float passedTime;
+    private float tickTimePassed;
 
     private bool playerIsStaying;
-
+    private bool playerLeft;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -33,6 +40,7 @@ public class DamageTrigger : MonoBehaviour
         if (other.gameObject.CompareTag(playerTag))
         {
             playerIsStaying = false;
+            playerLeft = true;
         }
     }
 
@@ -42,15 +50,28 @@ public class DamageTrigger : MonoBehaviour
         {
             if (continuiusDamage)
             {
-                if (tickTime >= timeBetweenTicks)
+                if (tickTimeContinuius >= timeBetweenTicks)
                 {
                     effected.DealDamage(tickDamageAmount);
-                    tickTime = 0;
+                    tickTimeContinuius = 0;
                 }
                 else
                 {
-                    tickTime += 1 * Time.deltaTime;
+                    tickTimeContinuius += 1 * Time.deltaTime;
                 }
+            }
+        }
+        if(passedDamage && playerLeft)
+        {
+            if(tickTimePassed >= passedTime)
+            {
+                playerLeft = false;
+                tickTimePassed = 0;
+            }
+            else
+            {
+                effected.DealDamage(passedDamageAmount);
+                tickTimePassed += 1 * Time.deltaTime;
             }
         }
 

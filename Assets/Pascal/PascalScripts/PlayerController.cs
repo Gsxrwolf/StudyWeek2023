@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     public bool damageBlock;
     private float damageBlockTime;
 
-    [SerializeField] private UnityEvent<float,float> onHealthChange;
+    [SerializeField] private UnityEvent<float, float> onHealthChange;
 
     private void Start()
     {
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        //animator.SetBool("walking", false);
+        AnimManager.Instance.PlayerShouldIdle();
 
         if (damageBlockTime != 0)
         {
@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             sR.flipX = true;
-            //animator.SetBool("walking", true);
+            AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
             playerTempPos = transform.position;
             playerTempPos.x -= curSpeed * Time.deltaTime;
             transform.position = playerTempPos;
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             sR.flipX = false;
-            //animator.SetBool("walking", true);
+            AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
             playerTempPos = transform.position;
             playerTempPos.x += curSpeed * Time.deltaTime;
             transform.position = playerTempPos;

@@ -31,7 +31,7 @@ public class AnimManager : MonoBehaviour
 
     private void Start()
     {
-        if(GameManager.Instance.weapon == 0)
+        if (GameManager.Instance.weapon == 0)
         {
             player.GetComponent<Animator>().runtimeAnimatorController = playerSwordAnimator;
         }
@@ -43,8 +43,9 @@ public class AnimManager : MonoBehaviour
     }
 
     #region Player
-    public void PlayerShouldWalk()
+    public void PlayerShouldWalk(float _speed, float _walkSpeed)
     {
+        playerAnimator.SetFloat("Speed", _speed / _walkSpeed);
         playerAnimator.SetBool("Walking", true);
     }
     public void PlayerShouldIdle()

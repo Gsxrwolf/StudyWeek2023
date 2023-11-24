@@ -15,7 +15,7 @@ public class CollactableHover : MonoBehaviour
     {
         if (hover)
         {
-            transform.position = new Vector3(transform.position.x + sinAmplitude * (Mathf.Sin(sinFrequenz * (sinTime-1)) + sinOffset), transform.position.y + sinAmplitude * (Mathf.Sin(sinFrequenz * sinTime) + sinOffset), transform.position.z);
+            transform.position = new Vector3(transform.position.x + sinAmplitude * (Mathf.Sin(sinFrequenz * (sinTime-2)) + sinOffset), transform.position.y + sinAmplitude * (Mathf.Sin(sinFrequenz * sinTime) + sinOffset), transform.position.z);
             sinTime += 1f * Time.deltaTime;
         }
     }
