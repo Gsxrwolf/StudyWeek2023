@@ -1,8 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class camController : MonoBehaviour
 {
     [SerializeField] private Transform _player;
+    private AudioListener aL;
 
     [SerializeField] private float dumping = 1.5f;
     [SerializeField] private Vector2 offset = new Vector2(2f, 1f);
@@ -17,12 +19,25 @@ public class camController : MonoBehaviour
 
     private void Start()
     {
+
+        if(GameManager.Instance.isMuted)
+        {
+            AudioListener.volume = 0;
+            AudioListener.pause = true;
+        }
+        if (!GameManager.Instance.isMuted)
+        {
+            AudioListener.volume = 1;
+            AudioListener.pause = false;
+        }
+
         offset = new Vector2(Mathf.Abs(offset.x), offset.y);
         FocusOnPlayer(_isLeft);
     }
 
     private void Update()
     {
+
         _currentX = Mathf.RoundToInt(_player.position.x);
 
         if (_currentX > _lastX) _isLeft = false;
