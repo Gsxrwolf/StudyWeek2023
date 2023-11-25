@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour
 {
     private Vector2 playerTempPos;
     private Rigidbody2D rB;
-    private SpriteRenderer sR;
-    //public Animator animator;
 
     private float curSpeed = 2f;
     [SerializeField] public float normalSpeed = 2f;
@@ -19,28 +17,28 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float jumpForce = 1.5f;
     public bool jumpBlock = false;
 
+    [SerializeField] private float health;
+    private float maxHealth;
+    public bool damageBlock;
+    private float damageBlockTime;
+
+    [SerializeField] private float damage;
+
     [SerializeField] private GameObject groundRayCastOrigin;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float rayCastLeangth;
     private bool grounded = true;
 
     [SerializeField] private GameObject damageBlockParticleSystem;
-    [SerializeField] private float health;
-    private float maxHealth;
-    public bool damageBlock;
-    private float damageBlockTime;
 
     [SerializeField] private UnityEvent<float, float> onHealthChange;
 
 
-    [SerializeField] private Collider2D attackCollider;
-    [SerializeField] private float damage;
-    [SerializeField] private string enemyTag;
+
 
     private void Start()
     {
         rB = GetComponent<Rigidbody2D>();
-        sR = GetComponent<SpriteRenderer>();
         maxHealth = health;
     }
 
@@ -76,19 +74,23 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            transform.localScale = new Vector3(-1, -1, 0);
-            AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
+            transform.localScale = new Vector3(-1, 1, 1);
             playerTempPos = transform.position;
             playerTempPos.x -= curSpeed * Time.deltaTime;
             transform.position = playerTempPos;
+            AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
         }
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            transform.localScale = new Vector3(1, 1, 0);
-            AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
+            transform.localScale = new Vector3(1, 1, 1);
             playerTempPos = transform.position;
             playerTempPos.x += curSpeed * Time.deltaTime;
             transform.position = playerTempPos;
+            AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
+        }
+        if(Input.GetMouseButtonDown(0))
+        {
+            AnimManager.Instance.PlayerShouldAttack();
         }
     }
     public void JumpCheck()
@@ -136,7 +138,11 @@ public class PlayerController : MonoBehaviour
         if (!damageBlock)
         {
             health -= _damage;
-            if (health < 0) health = 0;
+            if (health < 0)
+            {
+                health = 0;
+                AnimManager.Instance.PlayerShouldDie();
+            }
         }
         onHealthChange.Invoke(health, maxHealth);
     }
@@ -154,13 +160,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.IsTouching(attackCollider))
+        if(Input.GetMouseButtonDown(0))
         {
-            if(collision.CompareTag(enemyTag))
+            if (collision.CompareTag("Goblin") || collision.CompareTag("Oger") || collision.CompareTag("Ork"))
             {
-                //collision.gameObject.TryGetComponent<OgerScript>().DealDamage((int)damage);
-                //collision.gameObject.TryGetComponent<BossScript>().DealDamage((int)damage);
-                //collision.gameObject.TryGetComponent<OgerScript>().DealDamage((int)damage);
+                collision.gameObject.GetComponent<Enemy>().DealDamage(damage);
             }
         }
     }

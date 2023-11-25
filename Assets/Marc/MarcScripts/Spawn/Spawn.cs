@@ -20,7 +20,6 @@ public class Spawn : MonoBehaviour
         if(i == 1)
         {
             Instantiate(m_gameobject, transform.position,Quaternion.identity);
-            Enemy.isAlive = true;
             i = 2; // dafür da damit if nur einmal ausgelöst wird
         }
     }

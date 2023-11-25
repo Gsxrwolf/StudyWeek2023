@@ -12,12 +12,8 @@ public class HealthBar : MonoBehaviour
 
 
     void Update()
-    {      
-        if(Boss.isAlive)
-        {
-            Vector3 newXPos = Camera.main.WorldToScreenPoint(player.position + new Vector3(xPos, 1, 0));
-            healthBar.transform.position = newXPos;
-        }
-        
+    {
+        Vector3 newXPos = Camera.main.WorldToScreenPoint(player.position + new Vector3(xPos, 1, 0));
+        healthBar.transform.position = newXPos;
     }
 }

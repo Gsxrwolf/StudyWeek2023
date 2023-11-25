@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Bottom
+  - Goblin
+  - Oger
+  - Ork
   layers:
   - Default
   - TransparentFX

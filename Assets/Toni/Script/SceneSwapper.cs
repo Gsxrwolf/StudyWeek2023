@@ -17,11 +17,16 @@ public class SceneSwapper : MonoBehaviour
 
     public void OnMUteButtonPress()
     {
-    GameManager.Instance.isMuted = !GameManager.Instance.isMuted;
+        GameManager.Instance.isMuted = !GameManager.Instance.isMuted;
     }
 
     public void ChooseWeapon(int _Weapon)
     {
-    GameManager.Instance.weapon = _Weapon;
+        GameManager.Instance.weapon = _Weapon;
+    }
+
+    public void OnTitleScreenClick()
+    {
+        SceneManager.LoadScene(1);
     }
 }

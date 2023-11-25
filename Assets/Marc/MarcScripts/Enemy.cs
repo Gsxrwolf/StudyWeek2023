@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,71 +6,146 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]
-    private int speed = 50;
+    [SerializeField] public GameObject player; // player für position
 
-    [SerializeField] public int XP;
+    [SerializeField] private float speed = 50;
+    [SerializeField] public float health = 50;
+    [SerializeField] private float damage = 10;
 
-    [SerializeField] public GameObject gameobject; // player für position
+    [SerializeField] public float scorePoints;
 
-    [SerializeField] public GameObject attackTrigger; // Empty Object für OntriggerEnter um anzugreifen
+    private Rigidbody2D rB;
+    private bool isAttacking = false;
+    private bool left;
+    private bool right;
 
-    [SerializeField] public int health = 50;
-
-    [SerializeField] private int damage = 10;
-
-    private bool isStanding = false;
-
-    public static bool isAlive = false;
-
-    public PlayerController pC;
-
-    
     private void Start()
     {
-        
+        rB = this.GetComponent<Rigidbody2D>();
     }
+
     void Update()
     {
-        if (health == 0 || health <= 0) // die 
+        if (!isAttacking)
         {
+            LeftOrRight();
+            WalkToPlayer();
+        }
+    }
+
+    private void WalkToPlayer()
+    {
+        if (left)
+        {
+            rB.AddForce(Vector2.left * speed * Time.deltaTime);
+        }
+        if (right)
+        {
+            rB.AddForce(Vector2.right * speed * Time.deltaTime);
+        }
+    }
+
+    private void LeftOrRight()
+    {
+        if (player.transform.position.x < transform.position.x)
+        {
+            left = true;
+            right = false;
+        }
+        if (player.transform.position.x > transform.position.x)
+        {
+            right = true;
+            left = false;
+        }
+    }
+
+    public void DealDamage(float _damage) // get Damage from Player && Event !?
+    {
+        health -= _damage;
+        if (health <= 0)
+        {
+            health = 0;
+            GameManager.Instance.curScore += scorePoints;
             Destroy(gameObject);
-            GameManager.Instance.curScore += XP;
-            isAlive = false;
         }
-
-        //if x < aktuelle position flip rigidbody true ; andersrum false
-
-       // if (isStanding) // is True if Enemy is on Bottom 
-        
-         transform.position = Vector3.MoveTowards(transform.position, gameObject.transform.position, speed * Time.deltaTime);  // Follow the player    
-        
     }
 
-    public void DealDamage(int _damage) // get Damage from Player && Event !?
-    {
-        if(isAlive)
-        {
-            health = health - _damage;
-        }
-        
-    }
-
-
-    // Enemy soll stehenbleiben wenn er den Player berührt dann animation ausführen und schaden machen soferb player in range ist ( Trigger Enter 2D ? )
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-      //  if (collision.gameObject.CompareTag("Bottom")) // To avoid that Enemys will fly they are "sticked" to Bottom  ( In case we add a Dash or smth )
-      // {
-      //       isStanding = true;
-      //  }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            isAttacking = true;
             collision.gameObject.GetComponent<PlayerController>().DealDamage(damage);
+            Attack();
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            isAttacking = false;
+        }
+    }
+
+    public void Idle()
+    {
+        if (CompareTag("Goblin"))
+        {
+            AnimManager.Instance.GoblinShouldIdle();
+        }
+        if (CompareTag("Oger"))
+        {
+            AnimManager.Instance.OgerShouldIdle();
+        }
+        if (CompareTag("Ork"))
+        {
+            AnimManager.Instance.OrkShouldIdle();
+        }
+    }
+    public void Walk()
+    {
+        if (CompareTag("Goblin"))
+        {
+            AnimManager.Instance.GoblinShouldWalk();
+        }
+        if (CompareTag("Oger"))
+        {
+            AnimManager.Instance.OgerShouldWalk();
+        }
+        if (CompareTag("Ork"))
+        {
+            AnimManager.Instance.OrkShouldWalk();
+        }
+    }
+    public void Attack()
+    {
+        if (CompareTag("Goblin"))
+        {
+            AnimManager.Instance.GoblinShouldAttack();
+        }
+        if (CompareTag("Oger"))
+        {
+            AnimManager.Instance.OgerShouldAttack();
+        }
+        if (CompareTag("Ork"))
+        {
+            AnimManager.Instance.OrkShouldAttack();
+        }
+    }
+    public void Die()
+    {
+        if (CompareTag("Goblin"))
+        {
+            AnimManager.Instance.GoblinShouldDie();
+        }
+        if (CompareTag("Oger"))
+        {
+            AnimManager.Instance.OgerShouldDie();
+        }
+        if (CompareTag("Ork"))
+        {
+            AnimManager.Instance.OrkShouldDie();
         }
     }
 }

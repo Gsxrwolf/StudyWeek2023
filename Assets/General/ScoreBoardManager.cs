@@ -15,8 +15,8 @@ public class ScoreBoardManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private List<float> curScoreBuffer = new List<float>();

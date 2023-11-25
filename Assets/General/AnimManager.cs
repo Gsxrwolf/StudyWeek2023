@@ -13,8 +13,8 @@ public class AnimManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     [SerializeField] private AnimatorController playerSwordAnimator;
