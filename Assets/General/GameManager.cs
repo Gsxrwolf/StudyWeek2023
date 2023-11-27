@@ -25,22 +25,10 @@ public class GameManager : MonoBehaviour
 
     public bool isMuted;
 
-    private void OnEnable()
+    public void OnPlayerDeath()
     {
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
-    }
-    private void OnSceneUnloaded(Scene scene)
-    {
-        if(scene.buildIndex == 6)
-        {
             scoreBuffer.Add(curScore);
             curScore = 0;
-        }
     }
 
 }

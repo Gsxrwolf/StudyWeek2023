@@ -20,9 +20,10 @@ public class SceneSwapper : MonoBehaviour
         GameManager.Instance.isMuted = !GameManager.Instance.isMuted;
     }
 
-    public void ChooseWeapon(int _Weapon)
+    public void ChooseWeapon(int _weapon)
     {
-        GameManager.Instance.weapon = _Weapon;
+        GameManager.Instance.weapon = _weapon;
+        SceneManager.LoadScene(2);
     }
 
     public void OnTitleScreenClick()

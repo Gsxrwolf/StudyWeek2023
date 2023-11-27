@@ -8,40 +8,85 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] public GameObject player; // player für position
 
-    [SerializeField] private float speed = 50;
-    [SerializeField] public float health = 50;
-    [SerializeField] private float damage = 10;
+    [SerializeField] private float speed;
+    [SerializeField] public float health;
+    [SerializeField] private float damage;
+    [SerializeField] private float attackTimer;
+    private float attackTimerTicks;
 
     [SerializeField] public float scorePoints;
+
+    [SerializeField] public Collider2D upperBody;
+    [SerializeField] public Collider2D lowerBody;
+    [SerializeField] public Collider2D attackTrigger;
 
     private Rigidbody2D rB;
     private bool isAttacking = false;
     private bool left;
     private bool right;
+    private Vector3 enemyTempPos;
+    private Vector3 originScale;
 
     private void Start()
     {
         rB = this.GetComponent<Rigidbody2D>();
+        originScale = transform.localScale;
     }
 
     void Update()
     {
+        Idle();
         if (!isAttacking)
         {
             LeftOrRight();
             WalkToPlayer();
         }
+        if (isAttacking)
+        {
+            if (attackTimerTicks < 0)
+            {
+                player.GetComponent<PlayerController>().DealDamage(damage);
+                attackTimerTicks = attackTimer;
+                Attack();
+            }
+            else
+            {
+                attackTimerTicks -= 1 * Time.deltaTime;
+            }
+        }
     }
+
 
     private void WalkToPlayer()
     {
         if (left)
         {
-            rB.AddForce(Vector2.left * speed * Time.deltaTime);
+            TurnTo("left");
+            enemyTempPos = transform.position;
+            enemyTempPos.x -= speed * Time.deltaTime;
+            transform.position = enemyTempPos;
+            Walk();
         }
         if (right)
         {
-            rB.AddForce(Vector2.right * speed * Time.deltaTime);
+            TurnTo("right");
+            enemyTempPos = transform.position;
+            enemyTempPos.x += speed * Time.deltaTime;
+            transform.position = enemyTempPos;
+            Walk();
+        }
+    }
+
+
+    private void TurnTo(string _direction)
+    {
+        if (_direction == "left")
+        {
+            transform.localScale = new Vector3(originScale.x * -1, originScale.y, originScale.z);
+        }
+        if (_direction == "right")
+        {
+            transform.localScale = originScale;
         }
     }
 
@@ -66,18 +111,20 @@ public class Enemy : MonoBehaviour
         {
             health = 0;
             GameManager.Instance.curScore += scorePoints;
-            Destroy(gameObject);
+            Die();
+            this.gameObject.SetActive(false);
         }
     }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            isAttacking = true;
-            collision.gameObject.GetComponent<PlayerController>().DealDamage(damage);
-            Attack();
+            if (collision.gameObject.GetComponent<PlayerController>().attackTrigger != collision)
+            {
+                isAttacking = true;
+            }
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -85,6 +132,7 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             isAttacking = false;
+            attackTimerTicks = attackTimer;
         }
     }
 

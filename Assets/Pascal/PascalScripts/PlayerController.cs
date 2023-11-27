@@ -29,17 +29,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rayCastLeangth;
     private bool grounded = true;
 
+    [SerializeField] public Collider2D upperBody;
+    [SerializeField] public Collider2D lowerBody;
+    [SerializeField] public Collider2D attackTrigger;
+
     [SerializeField] private GameObject damageBlockParticleSystem;
 
     [SerializeField] private UnityEvent<float, float> onHealthChange;
 
-
+    private Vector3 originScale;
 
 
     private void Start()
     {
         rB = GetComponent<Rigidbody2D>();
         maxHealth = health;
+        originScale = transform.localScale;
     }
 
     private void Update()
@@ -74,7 +79,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            TurnTo("left");
             playerTempPos = transform.position;
             playerTempPos.x -= curSpeed * Time.deltaTime;
             transform.position = playerTempPos;
@@ -82,17 +87,30 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            TurnTo("right");
             playerTempPos = transform.position;
             playerTempPos.x += curSpeed * Time.deltaTime;
             transform.position = playerTempPos;
             AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
         }
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             AnimManager.Instance.PlayerShouldAttack();
         }
     }
+
+    private void TurnTo(string _direction)
+    {
+        if (_direction == "left")
+        {
+            transform.localScale = new Vector3(originScale.x * -1, originScale.y, originScale.z);
+        }
+        if (_direction == "right")
+        {
+            transform.localScale = originScale;
+        }
+    }
+
     public void JumpCheck()
     {
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
@@ -141,6 +159,7 @@ public class PlayerController : MonoBehaviour
             if (health < 0)
             {
                 health = 0;
+                GameManager.Instance.OnPlayerDeath();
                 AnimManager.Instance.PlayerShouldDie();
             }
         }
@@ -160,11 +179,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             if (collision.CompareTag("Goblin") || collision.CompareTag("Oger") || collision.CompareTag("Ork"))
             {
-                collision.gameObject.GetComponent<Enemy>().DealDamage(damage);
+                if (collision.gameObject.GetComponent<Enemy>().attackTrigger != collision)
+                {
+                    collision.gameObject.GetComponent<Enemy>().DealDamage(damage);
+                }
             }
         }
     }

@@ -2143,7 +2143,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &135711958
 Transform:
   m_ObjectHideFlags: 0
@@ -11437,7 +11437,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1319843889
 Transform:
   m_ObjectHideFlags: 0
@@ -17496,7 +17496,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &124816149781923788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18298,7 +18298,7 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
+  m_UseAutoMass: 1
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
@@ -18461,7 +18461,7 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
+  m_UseAutoMass: 1
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
@@ -18476,7 +18476,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 5
 --- !u!61 &2359460524746995162
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19330,7 +19330,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &4675369780393497868
 GameObject:
   m_ObjectHideFlags: 0
@@ -24479,6 +24479,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   rayCastLeangth: 0.1
+  upperBody: {fileID: 5744965981231129398}
+  lowerBody: {fileID: 3948091490331195402}
+  attackTrigger: {fileID: 8797754448358733857}
   damageBlockParticleSystem: {fileID: 8559991470511281617}
   onHealthChange:
     m_PersistentCalls:
@@ -24675,7 +24678,11 @@ MonoBehaviour:
   speed: 50
   health: 50
   damage: 10
+  attackTimer: 0
   scorePoints: 100
+  upperBody: {fileID: 2678697058712532146}
+  lowerBody: {fileID: 6205699313459021102}
+  attackTrigger: {fileID: 306070012}
 --- !u!1 &6280954531505373334
 GameObject:
   m_ObjectHideFlags: 0
@@ -25664,7 +25671,11 @@ MonoBehaviour:
   speed: 5
   health: 10
   damage: 1
+  attackTimer: 2
   scorePoints: 10
+  upperBody: {fileID: 197843325807740670}
+  lowerBody: {fileID: 4015797667438630176}
+  attackTrigger: {fileID: 1630629364324036724}
 --- !u!222 &8515078555861569141
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25866,8 +25877,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 18.16547
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -25895,10 +25906,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 8797754448358733856}
-  speed: 50
-  health: 50
-  damage: 10
+  speed: 2
+  health: 20
+  damage: 5
+  attackTimer: 3
   scorePoints: 50
+  upperBody: {fileID: 8664690553574448847}
+  lowerBody: {fileID: 8664690553574448848}
+  attackTrigger: {fileID: 8664690553574448846}
 --- !u!4 &8783518233604474486
 Transform:
   m_ObjectHideFlags: 0
@@ -25927,6 +25942,7 @@ GameObject:
   - component: {fileID: 6894388562811899815}
   - component: {fileID: 5744965981231129398}
   - component: {fileID: 3948091490331195402}
+  - component: {fileID: 8797754448358733857}
   - component: {fileID: 5867858589326168461}
   - component: {fileID: 2112015250}
   m_Layer: 6
@@ -25936,6 +25952,51 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!61 &8797754448358733857
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8797754448358733856}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 2, y: 0.39}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 6.27, y: 8.82}
+    newSize: {x: 6.272, y: 8.82}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 4, y: 1.5}
+  m_EdgeRadius: 0
 --- !u!223 &8979748832469009900
 Canvas:
   m_ObjectHideFlags: 0

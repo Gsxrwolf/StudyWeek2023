@@ -45,11 +45,13 @@ public class AnimManager : MonoBehaviour
     #region Player
     public void PlayerShouldWalk(float _speed, float _walkSpeed)
     {
+        playerAnimator.SetBool("Attacking", false);
         playerAnimator.SetFloat("Speed", _speed / _walkSpeed);
         playerAnimator.SetBool("Walking", true);
     }
     public void PlayerShouldIdle()
     {
+        playerAnimator.SetBool("Attacking", false);
         playerAnimator.SetBool("Walking", false);
     }
     public void PlayerShouldAttack()
@@ -66,10 +68,12 @@ public class AnimManager : MonoBehaviour
 
     public void GoblinShouldWalk()
     {
+        goblinAnimator.SetBool("Attacking", false);
         goblinAnimator.SetBool("Walking", true);
     }
     public void GoblinShouldIdle()
     {
+        goblinAnimator.SetBool("Attacking", false);
         goblinAnimator.SetBool("Walking", false);
     }
     public void GoblinShouldAttack()
@@ -86,10 +90,12 @@ public class AnimManager : MonoBehaviour
 
     public void OgerShouldWalk()
     {
+        ogerAnimator.SetBool("Attacking", false);
         ogerAnimator.SetBool("Walking", true);
     }
     public void OgerShouldIdle()
     {
+        ogerAnimator.SetBool("Attacking", false);
         ogerAnimator.SetBool("Walking", false);
     }
     public void OgerShouldAttack()
@@ -106,10 +112,12 @@ public class AnimManager : MonoBehaviour
 
     public void OrkShouldWalk()
     {
+        orkAnimator.SetBool("Attacking", false);
         orkAnimator.SetBool("Walking", true);
     }
     public void OrkShouldIdle()
     {
+        orkAnimator.SetBool("Attacking", false);
         orkAnimator.SetBool("Walking", false);
     }
     public void OrkShouldAttack()

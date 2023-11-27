@@ -7,17 +7,6 @@ using UnityEngine;
 
 public class ScoreBoardManager : MonoBehaviour
 {
-    public static ScoreBoardManager Instance { get; private set; }
-    private void Awake()
-    {
-        if (Instance is not null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
     private List<float> curScoreBuffer = new List<float>();
     private List<float> lastScoreboard = new List<float>();
@@ -46,13 +35,15 @@ public class ScoreBoardManager : MonoBehaviour
             }
 
         }
+        updatedScoreboard = lastScoreboard;
         SendUpdatedScoreBoardToGameManagerAndResetCurScore();
         PrintUpdatedScoreBoardToText();
     }
 
     private bool CheckIfProcessedScoreIsHigherThanLowestScore(float _processedScore)
     {
-        if (_processedScore > updatedScoreboard[0])
+        lastScoreboard.Sort();
+        if (_processedScore > lastScoreboard[0])
         {
             return true;
         }
@@ -64,6 +55,7 @@ public class ScoreBoardManager : MonoBehaviour
 
     private void SendUpdatedScoreBoardToGameManagerAndResetCurScore()
     {
+        GameManager.Instance.scoreBuffer.Clear();
         GameManager.Instance.scoreboard = updatedScoreboard;
     }
 
@@ -71,35 +63,32 @@ public class ScoreBoardManager : MonoBehaviour
     {
         updatedScoreboard.Sort();
         updatedScoreboard.Reverse();
-        for (int i = 0; i < scoreTextFields.Count; i++)
+        for (int i = 0; i < updatedScoreboard.Count; i++)
         {
-            if (updatedScoreboard[i] != null)
-            {
-                scoreTextFields[i].text = updatedScoreboard[i].ToString();
-            }
+            scoreTextFields[i].text = updatedScoreboard[i].ToString();
         }
     }
-    
+
 
     private void DeleteLowestScore()
     {
-        updatedScoreboard.Sort();
-        updatedScoreboard.RemoveAt(0);
+        lastScoreboard.Sort();
+        lastScoreboard.RemoveAt(0);
     }
 
     private void SortScoreInScoreBoard(float _processedScore)
     {
-        updatedScoreboard.Add(_processedScore);
-        updatedScoreboard.Sort();
+        lastScoreboard.Add(_processedScore);
+        lastScoreboard.Sort();
     }
 
     public bool CheckIfScoreboardHasEmptySlots()
     {
-        if (updatedScoreboard.Count < 10)
+        if (lastScoreboard.Count < 10)
         {
             return true;
         }
-        if (updatedScoreboard.Count >= 10)
+        if (lastScoreboard.Count >= 10)
         {
             return false;
         }
