@@ -26,6 +26,9 @@ public class Enemy : MonoBehaviour
     private bool right;
     private Vector3 enemyTempPos;
     private Vector3 originScale;
+    private bool pIsDead;
+    private Collider2D collision;
+    private bool pInRange;
 
     private void Start()
     {
@@ -36,22 +39,33 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         Idle();
-        if (!isAttacking)
+        if(pInRange)
         {
-            LeftOrRight();
-            WalkToPlayer();
-        }
-        if (isAttacking)
-        {
-            if (attackTimerTicks < 0)
+            pIsDead = collision.gameObject.GetComponent<PlayerController>().isDead;
+            if (collision.isTrigger == false)
             {
-                player.GetComponent<PlayerController>().DealDamage(damage);
-                attackTimerTicks = attackTimer;
-                Attack();
+                isAttacking = true;
             }
-            else
+        }
+        if ((!pIsDead))
+        {
+            if (!isAttacking)
             {
-                attackTimerTicks -= 1 * Time.deltaTime;
+                LeftOrRight();
+                WalkToPlayer();
+            }
+            if (isAttacking)
+            {
+                if (attackTimerTicks < 0)
+                {
+                    player.GetComponent<PlayerController>().DealDamage(damage);
+                    attackTimerTicks = attackTimer;
+                    Attack();
+                }
+                else
+                {
+                    attackTimerTicks -= 1 * Time.deltaTime;
+                }
             }
         }
     }
@@ -117,22 +131,24 @@ public class Enemy : MonoBehaviour
     }
 
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D _collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (_collision.gameObject.CompareTag("Player"))
         {
-            if (collision.gameObject.GetComponent<PlayerController>().attackTrigger != collision)
-            {
-                isAttacking = true;
-            }
+            pInRange = true;
+            collision = _collision;
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D _collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (_collision.gameObject.CompareTag("Player"))
         {
-            isAttacking = false;
-            attackTimerTicks = attackTimer;
+            if (_collision.isTrigger == false)
+            {
+                isAttacking = false;
+                pInRange = false;
+                attackTimerTicks = attackTimer;
+            }
         }
     }
 

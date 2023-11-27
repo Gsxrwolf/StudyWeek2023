@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -29,6 +30,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float rayCastLeangth;
     private bool grounded = true;
 
+    public bool isDead;
+    [SerializeField] private float deathCountdownTime;
+    private float deathCountdown;
+
     [SerializeField] public Collider2D upperBody;
     [SerializeField] public Collider2D lowerBody;
     [SerializeField] public Collider2D attackTrigger;
@@ -39,38 +44,51 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 originScale;
 
-
     private void Start()
     {
         rB = GetComponent<Rigidbody2D>();
         maxHealth = health;
         originScale = transform.localScale;
+        deathCountdown = deathCountdownTime;
     }
 
     private void Update()
     {
         AnimManager.Instance.PlayerShouldIdle();
+        if(!isDead)
+        {
+            if (damageBlockTime != 0)
+            {
+                damageBlockTime -= 1 * Time.deltaTime;
+            }
+            if (damageBlockTime < 0)
+            {
+                damageBlockTime = 0;
+            }
+            if (damageBlockTime == 0)
+            {
+                damageBlockParticleSystem.SetActive(false);
+                damageBlock = false;
+            }
 
-        if (damageBlockTime != 0)
-        {
-            damageBlockTime -= 1 * Time.deltaTime;
+            SprintCheck();
+            InputCheck();
+            CheckGrounded();
+            if (!jumpBlock)
+            {
+                JumpCheck();
+            }
         }
-        if (damageBlockTime < 0)
+        else
         {
-            damageBlockTime = 0;
-        }
-        if (damageBlockTime == 0)
-        {
-            damageBlockParticleSystem.SetActive(false);
-            damageBlock = false;
-        }
-
-        SprintCheck();
-        InputCheck();
-        CheckGrounded();
-        if (!jumpBlock)
-        {
-            JumpCheck();
+            if(deathCountdown <= 0)
+            {
+                SceneManager.LoadScene(7);
+            }
+            else
+            {
+                deathCountdown -= 1 * Time.deltaTime;
+            }
         }
     }
 
@@ -159,6 +177,7 @@ public class PlayerController : MonoBehaviour
             if (health < 0)
             {
                 health = 0;
+                isDead = true;
                 GameManager.Instance.OnPlayerDeath();
                 AnimManager.Instance.PlayerShouldDie();
             }

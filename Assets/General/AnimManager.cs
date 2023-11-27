@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AnimManager : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class AnimManager : MonoBehaviour
     [SerializeField] private Animator orkAnimator;
 
     [SerializeField] private Animator ogerAnimator;
+    private bool repeat;
 
     private void Start()
     {
@@ -40,6 +42,18 @@ public class AnimManager : MonoBehaviour
             player.GetComponent<Animator>().runtimeAnimatorController = playerHammerAnimator;
         }
         playerAnimator = player.GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        if(repeat)
+        {
+            playerAnimator.SetBool("Dead", false);
+            goblinAnimator.SetBool("Dead", false);
+            ogerAnimator.SetBool("Dead", false);
+            orkAnimator.SetBool("Dead", false);
+            repeat = false;
+        }
     }
 
     #region Player
@@ -61,6 +75,7 @@ public class AnimManager : MonoBehaviour
     public void PlayerShouldDie()
     {
         playerAnimator.SetBool("Dead", true);
+        repeat = true;
     }
     #endregion
 
@@ -83,6 +98,7 @@ public class AnimManager : MonoBehaviour
     public void GoblinShouldDie()
     {
         goblinAnimator.SetBool("Dead", true);
+        repeat = true;
     }
     #endregion
 
@@ -105,6 +121,7 @@ public class AnimManager : MonoBehaviour
     public void OgerShouldDie()
     {
         ogerAnimator.SetBool("Dead", true);
+        repeat = true;
     }
     #endregion
 
@@ -127,6 +144,7 @@ public class AnimManager : MonoBehaviour
     public void OrkShouldDie()
     {
         orkAnimator.SetBool("Dead", true);
+        repeat = true;
     }
     #endregion
 }

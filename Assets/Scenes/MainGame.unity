@@ -24479,6 +24479,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   rayCastLeangth: 0.1
+  isDead: 0
+  deathCountdownTime: 5
   upperBody: {fileID: 5744965981231129398}
   lowerBody: {fileID: 3948091490331195402}
   attackTrigger: {fileID: 8797754448358733857}
@@ -24799,7 +24801,7 @@ Rigidbody2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
