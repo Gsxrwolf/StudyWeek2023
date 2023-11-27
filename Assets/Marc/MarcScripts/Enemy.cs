@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
 {
@@ -29,43 +31,70 @@ public class Enemy : MonoBehaviour
     private bool pIsDead;
     private Collider2D collision;
     private bool pInRange;
+    [SerializeField] private float deathCountdownTime;
+    private float deathCountdown;
+    private bool isDead;
+
+    private Animator animator;
+    private bool repeat;
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
         rB = this.GetComponent<Rigidbody2D>();
         originScale = transform.localScale;
+        deathCountdown = deathCountdownTime;
     }
 
     void Update()
     {
-        Idle();
-        if(pInRange)
+        if (repeat)
         {
-            pIsDead = collision.gameObject.GetComponent<PlayerController>().isDead;
-            if (collision.isTrigger == false)
+            animator.SetBool("Dead", false);
+            repeat = false;
+        }
+        Idle();
+        if (!isDead)
+        {
+            if (pInRange)
             {
-                isAttacking = true;
+                pIsDead = collision.gameObject.GetComponent<PlayerController>().isDead;
+                if (collision.isTrigger == false)
+                {
+                    isAttacking = true;
+                }
+            }
+            if (!pIsDead)
+            {
+                if (!isAttacking)
+                {
+                    LeftOrRight();
+                    WalkToPlayer();
+                }
+                if (isAttacking)
+                {
+                    if (attackTimerTicks < 0)
+                    {
+                        player.GetComponent<PlayerController>().DealDamage(damage);
+                        attackTimerTicks = attackTimer;
+                        Attack();
+                    }
+                    else
+                    {
+                        attackTimerTicks -= 1 * Time.deltaTime;
+                    }
+                }
             }
         }
-        if ((!pIsDead))
+        else
         {
-            if (!isAttacking)
+            if (deathCountdown <= 0)
             {
-                LeftOrRight();
-                WalkToPlayer();
+                this.gameObject.SetActive(false);
             }
-            if (isAttacking)
+            else
             {
-                if (attackTimerTicks < 0)
-                {
-                    player.GetComponent<PlayerController>().DealDamage(damage);
-                    attackTimerTicks = attackTimer;
-                    Attack();
-                }
-                else
-                {
-                    attackTimerTicks -= 1 * Time.deltaTime;
-                }
+                deathCountdown -= 1 * Time.deltaTime;
             }
         }
     }
@@ -118,15 +147,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void DealDamage(float _damage) // get Damage from Player && Event !?
+    public void DealDamage(float _damage)
     {
         health -= _damage;
         if (health <= 0)
         {
             health = 0;
-            GameManager.Instance.curScore += scorePoints;
+            isDead = true;
+            GameManager.Instance.OnMobDeath(scorePoints);
             Die();
-            this.gameObject.SetActive(false);
         }
     }
 
@@ -154,62 +183,24 @@ public class Enemy : MonoBehaviour
 
     public void Idle()
     {
-        if (CompareTag("Goblin"))
-        {
-            AnimManager.Instance.GoblinShouldIdle();
-        }
-        if (CompareTag("Oger"))
-        {
-            AnimManager.Instance.OgerShouldIdle();
-        }
-        if (CompareTag("Ork"))
-        {
-            AnimManager.Instance.OrkShouldIdle();
-        }
+        animator.SetBool("Attacking", false);
+        animator.SetBool("Walking", true);
+        animator.SetBool("Dead", false);
     }
     public void Walk()
     {
-        if (CompareTag("Goblin"))
-        {
-            AnimManager.Instance.GoblinShouldWalk();
-        }
-        if (CompareTag("Oger"))
-        {
-            AnimManager.Instance.OgerShouldWalk();
-        }
-        if (CompareTag("Ork"))
-        {
-            AnimManager.Instance.OrkShouldWalk();
-        }
+        animator.SetBool("Attacking", false);
+        animator.SetBool("Walking", false);
+        animator.SetBool("Dead", false);
     }
     public void Attack()
     {
-        if (CompareTag("Goblin"))
-        {
-            AnimManager.Instance.GoblinShouldAttack();
-        }
-        if (CompareTag("Oger"))
-        {
-            AnimManager.Instance.OgerShouldAttack();
-        }
-        if (CompareTag("Ork"))
-        {
-            AnimManager.Instance.OrkShouldAttack();
-        }
+        animator.SetBool("Walking", false);
+        animator.SetBool("Attacking", true);
+        animator.SetBool("Dead", false);
     }
     public void Die()
     {
-        if (CompareTag("Goblin"))
-        {
-            AnimManager.Instance.GoblinShouldDie();
-        }
-        if (CompareTag("Oger"))
-        {
-            AnimManager.Instance.OgerShouldDie();
-        }
-        if (CompareTag("Ork"))
-        {
-            AnimManager.Instance.OrkShouldDie();
-        }
+        animator.SetBool("Dead", true);
     }
 }

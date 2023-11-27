@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,4 +32,8 @@ public class GameManager : MonoBehaviour
             curScore = 0;
     }
 
+    internal void OnMobDeath(float _scorePoints)
+    {
+        curScore += _scorePoints;
+    }
 }

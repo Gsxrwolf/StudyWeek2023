@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEditor.Animations;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -39,10 +41,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public Collider2D attackTrigger;
 
     [SerializeField] private GameObject damageBlockParticleSystem;
+    private Animator animator;
+    [SerializeField] private AnimatorController playerSwordAnimator;
+    [SerializeField] private AnimatorController playerHammerAnimator;
 
     [SerializeField] private UnityEvent<float, float> onHealthChange;
 
     private Vector3 originScale;
+    private bool repeat;
 
     private void Start()
     {
@@ -50,11 +56,25 @@ public class PlayerController : MonoBehaviour
         maxHealth = health;
         originScale = transform.localScale;
         deathCountdown = deathCountdownTime;
+        animator = GetComponent<Animator>();
+        if (GameManager.Instance.weapon == 0)
+        {
+            animator.runtimeAnimatorController = playerSwordAnimator;
+        }
+        if (GameManager.Instance.weapon == 1)
+        {
+            animator.runtimeAnimatorController = playerHammerAnimator;
+        }
     }
 
     private void Update()
     {
-        AnimManager.Instance.PlayerShouldIdle();
+        if (repeat)
+        {
+            animator.SetBool("Dead", false);
+            repeat = false;
+        }
+        Idle();
         if(!isDead)
         {
             if (damageBlockTime != 0)
@@ -101,7 +121,7 @@ public class PlayerController : MonoBehaviour
             playerTempPos = transform.position;
             playerTempPos.x -= curSpeed * Time.deltaTime;
             transform.position = playerTempPos;
-            AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
+            Walk(curSpeed, normalSpeed);
         }
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
@@ -109,11 +129,11 @@ public class PlayerController : MonoBehaviour
             playerTempPos = transform.position;
             playerTempPos.x += curSpeed * Time.deltaTime;
             transform.position = playerTempPos;
-            AnimManager.Instance.PlayerShouldWalk(curSpeed, normalSpeed);
+            Walk(curSpeed, normalSpeed);
         }
         if (Input.GetMouseButtonDown(0))
         {
-            AnimManager.Instance.PlayerShouldAttack();
+            Attack();
         }
     }
 
@@ -179,7 +199,7 @@ public class PlayerController : MonoBehaviour
                 health = 0;
                 isDead = true;
                 GameManager.Instance.OnPlayerDeath();
-                AnimManager.Instance.PlayerShouldDie();
+                Die();
             }
         }
         onHealthChange.Invoke(health, maxHealth);
@@ -202,7 +222,7 @@ public class PlayerController : MonoBehaviour
         {
             if (collision.CompareTag("Goblin") || collision.CompareTag("Oger") || collision.CompareTag("Ork"))
             {
-                if (collision.gameObject.GetComponent<Enemy>().attackTrigger != collision)
+                if (collision.isTrigger == false)
                 {
                     collision.gameObject.GetComponent<Enemy>().DealDamage(damage);
                 }
@@ -210,6 +230,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Walk(float _speed, float _walkSpeed)
+    {
+        animator.SetBool("Attacking", false);
+        animator.SetFloat("Speed", _speed / _walkSpeed);
+        animator.SetBool("Walking", true);
+    }
+    public void Idle()
+    {
+        animator.SetBool("Attacking", false);
+        animator.SetBool("Walking", false);
+    }
+    public void Attack()
+    {
+        animator.SetBool("Attacking", true);
+    }
+    public void Die()
+    {
+        animator.SetBool("Dead", true);
+        repeat = true;
+    }
 
     public void Step()
     {
