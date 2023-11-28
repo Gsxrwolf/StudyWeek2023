@@ -184,23 +184,23 @@ public class Enemy : MonoBehaviour
     public void Idle()
     {
         animator.SetBool("Attacking", false);
-        animator.SetBool("Walking", true);
+        animator.SetBool("Walking", false);
         animator.SetBool("Dead", false);
     }
     public void Walk()
     {
         animator.SetBool("Attacking", false);
-        animator.SetBool("Walking", false);
+        animator.SetBool("Walking", true);
         animator.SetBool("Dead", false);
     }
     public void Attack()
     {
-        animator.SetBool("Walking", false);
         animator.SetBool("Attacking", true);
         animator.SetBool("Dead", false);
     }
     public void Die()
     {
         animator.SetBool("Dead", true);
+        repeat = true;
     }
 }

@@ -230,20 +230,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Idle()
+    {
+        animator.SetBool("Attacking", false);
+        animator.SetBool("Walking", false);
+        animator.SetBool("Dead", false);
+    }
     public void Walk(float _speed, float _walkSpeed)
     {
         animator.SetBool("Attacking", false);
         animator.SetFloat("Speed", _speed / _walkSpeed);
         animator.SetBool("Walking", true);
-    }
-    public void Idle()
-    {
-        animator.SetBool("Attacking", false);
-        animator.SetBool("Walking", false);
+        animator.SetBool("Dead", false);
     }
     public void Attack()
     {
         animator.SetBool("Attacking", true);
+        animator.SetBool("Dead", false);
     }
     public void Die()
     {
